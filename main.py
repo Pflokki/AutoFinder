@@ -1,12 +1,14 @@
-from DromParser import get_content, BASE_URL, save_csv, NAME_FILE, get_car_url_list
+from DromParser.DromParser import get_car_url, get_content, save_csv, NAME_FILE
+
+import asyncio
 
 
-def main():
-    for car_url in get_car_url_list():
+async def run():
+    async for car_url in get_car_url():
         spb_url = car_url.replace('auto.drom.ru', 'spb.drom.ru')
-        for content in get_content(spb_url):
+        async for content in get_content(spb_url):
             save_csv(NAME_FILE, content)
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.get_event_loop().run_until_complete(run())
